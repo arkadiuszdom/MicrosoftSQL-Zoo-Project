@@ -4,6 +4,22 @@ GO
 CREATE DATABASE Zoo
 GO
 
+CREATE TABLE Zoo..wartosci_rozmyte(
+	tabela varchar(30) NOT NULL,
+	atrybut varchar(30) NOT NULL,
+	zmienna_lingwistyczna varchar(30) NOT NULL,
+	a int NOT NULL,
+	b int NOT NULL,
+	c int NOT NULL,
+	d int NOT NULL,
+	PRIMARY KEY(tabela, atrybut, zmienna_lingwistyczna),
+	CHECK (a<=b and b<=c and c<=d)
+);
+GO
+
+
+
+
 CREATE TABLE Zoo..pracownicy (
     pracownik_id int NOT NULL ,
 	imie varchar(30) NOT NULL,	
@@ -65,19 +81,6 @@ CREATE TABLE Zoo..zwierzeta (
 
 GO
 
-CREATE TABLE Zoo..wartosci_rozmyte(
-	tabela varchar(30) NOT NULL,
-	atrybut varchar(30) NOT NULL,
-	zmienna_lingwistyczna varchar(30) NOT NULL,
-	a int NOT NULL,
-	b int NOT NULL,
-	c int NOT NULL,
-	d int NOT NULL,
-	PRIMARY KEY(tabela, atrybut, zmienna_lingwistyczna),
-	CHECK (a<=b and b<=c and c<=d)
-);
-GO
-
 CREATE TABLE Zoo..pracownicy_klatki(
 	pracownik_id int NOT NULL,
 	klatka_id int NOT NULL,
@@ -86,9 +89,69 @@ CREATE TABLE Zoo..pracownicy_klatki(
 	foreign key(klatka_id) references klatki(klatka_id)
 );
 
+GO
 
-go
-
-
+--Arek010419
+CREATE TABLE Zoo..plany_zywieniowe (
+    plan_zywieniowy_id int NOT NULL,
+	nazwa varchar(30) NOT NULL,
+    PRIMARY KEY (plan_zywieniowy_id),
+);
+GO
+CREATE TABLE Zoo..gatunki_plany_zywieniowe (
+    plan_zywieniowy_id int NOT NULL,
+    gatunek_id int NOT NULL,
+    PRIMARY KEY (plan_zywieniowy_id, gatunek_id),
+	foreign key(gatunek_id) references gatunki(gatunek_id),
+	foreign key(plan_zywieniowy_id) references plany_zywieniowe(plan_zywieniowy_id),
+);
+GO
+CREATE TABLE Zoo..indywidualne_plany_zywieniowe (
+    plan_zywieniowy_id int NOT NULL,
+    zwierze_id int NOT NULL,
+    PRIMARY KEY (plan_zywieniowy_id, zwierze_id),
+	foreign key(zwierze_id) references zwierzeta(zwierze_id),
+	foreign key(plan_zywieniowy_id) references plany_zywieniowe(plan_zywieniowy_id)
+);
+GO
+CREATE TABLE Zoo..wartosci_odzywcze (
+    wartosc_odzywcza_id int NOT NULL,
+	nazwa varchar(30) NOT NULL,
+    PRIMARY KEY (wartosc_odzywcza_id),
+);
+GO
+CREATE TABLE Zoo..plany_zywieniowe_wartosci_odzywcze (
+    plan_zywieniowy_id int NOT NULL,
+    wartosc_odzywcza_id int NOT NULL,
+	ilosc int NOT NULL,
+    PRIMARY KEY (plan_zywieniowy_id, wartosc_odzywcza_id),
+	foreign key(plan_zywieniowy_id) references plany_zywieniowe(plan_zywieniowy_id),
+	foreign key(wartosc_odzywcza_id) references wartosci_odzywcze(wartosc_odzywcza_id)
+);
+GO
+CREATE TABLE Zoo..produkty (
+    produkt_id int NOT NULL,
+	nazwa varchar(30) NOT NULL,
+    PRIMARY KEY (produkt_id),
+);
+GO
+CREATE TABLE Zoo..produkty_wartosci_odzywcze (
+    produkt_id int NOT NULL,
+    wartosc_odzywcza_id int NOT NULL,
+	zawartosc_wartosci_odzywczej_na_sto_gram int NOT NULL,
+    PRIMARY KEY (produkt_id, wartosc_odzywcza_id),
+	foreign key(produkt_id) references produkty(produkt_id),
+	foreign key(wartosc_odzywcza_id) references wartosci_odzywcze(wartosc_odzywcza_id)
+);
+GO
+CREATE TABLE Zoo..magazyn (
+    produkt_id int NOT NULL,
+	data_waznosci datetime NOT NULL,
+	ilosc int NOT NULL,
+    PRIMARY KEY (produkt_id, data_waznosci),
+	foreign key(produkt_id) references produkty(produkt_id),
+);
+GO
+--Arek010419
 
 
