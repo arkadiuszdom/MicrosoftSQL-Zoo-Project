@@ -152,6 +152,41 @@ CREATE TABLE Zoo..magazyn (
 	foreign key(produkt_id) references produkty(produkt_id),
 );
 GO
+
+CREATE TABLE Zoo..lekarze (
+	lekarz_id int NOT NULL ,
+	imie varchar(30) NOT NULL,	
+	nazwisko varchar(30) NOT NULL,
+    PRIMARY KEY (lekarz_id)
+);
+GO
+
+CREATE TABLE Zoo..lekarz_zwierze (
+	lekarz_id int NOT NULL ,
+	zwierze_id int NOT NULL ,
+	lekarz_zwierze_id int NOT NULL ,
+	PRIMARY KEY (lekarz_id, zwierze_id),
+	foreign key (lekarz_id) references lekarze(lekarz_id) ,
+	foreign key (zwierze_id) references zwierzeta(zwierze_id)
+);
+GO
+
+CREATE TABLE Zoo..leki (
+	lek_id int NOT NULL ,
+	nazwa varchar(30) NOT NULL ,
+	PRIMARY KEY (lek_id)
+);
+
+CREATE TABLE Zoo..zwierze_lek (
+	lekarz_zwierze_id int NOT NULL ,
+	lek_id int NOT NULL ,
+	dawkowanie_leku varchar(30) NOT NULL ,
+	porcjowanie_karmy float NOT NULL ,
+	PRIMARY KEY (lek_id, lekarz_zwierze_id),
+	foreign key (lekarz_zwierze_id) references lekarz_zwierze(lekarz_zwierze_id),
+	foreign key (lek_id) references leki(lek_id)
+);
+
 --Arek010419
 
 
