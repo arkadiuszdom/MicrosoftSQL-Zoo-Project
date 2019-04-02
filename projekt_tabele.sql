@@ -18,14 +18,36 @@ CREATE TABLE Zoo..wartosci_rozmyte(
 GO
 
 
+--Gosia 02/04/2019
+CREATE TABLE Zoo..kierownicy (
+    kierownik_id int NOT NULL ,
+	imie varchar(30) NOT NULL,	
+	nazwisko varchar(30) NOT NULL,
+	sektor varchar(30) NOT NULL,
+    PRIMARY KEY (kierownik_id)
+);
+GO
 
-
+--edit Gosia 02/04/2019
 CREATE TABLE Zoo..pracownicy (
     pracownik_id int NOT NULL ,
 	imie varchar(30) NOT NULL,	
 	nazwisko varchar(30) NOT NULL,
-	stanowisko varchar(30) NOT NULL,
-    PRIMARY KEY (pracownik_id)
+	kierownik_id int NOT NULL,
+    PRIMARY KEY (pracownik_id),
+	foreign key(kierownik_id) references kierownicy(kierownik_id) 
+);
+GO
+
+--Gosia 
+CREATE TABLE Zoo..grafik(
+	grafik_id int NOT NULL, 
+	pracownik_id int NOT NULL, 
+	data DATE NOT NULL, 
+	godz_poczatek TIME NOT NULL, 
+	godz_koniec TIME NOT NULL,
+	PRIMARY KEY (grafik_id),
+	foreign key(pracownik_id) references pracownicy(pracownik_id)
 );
 GO
 
@@ -81,11 +103,12 @@ CREATE TABLE Zoo..zwierzeta (
 
 GO
 
+--edit Gosia 02/04/2019
 CREATE TABLE Zoo..pracownicy_klatki(
-	pracownik_id int NOT NULL,
+	kierownik_id int NOT NULL,
 	klatka_id int NOT NULL,
-    PRIMARY KEY (pracownik_id, klatka_id),
-	foreign key(pracownik_id) references pracownicy(pracownik_id),
+    PRIMARY KEY (kierownik_id, klatka_id),
+	foreign key(kierownik_id) references kierownicy(kierownik_id),
 	foreign key(klatka_id) references klatki(klatka_id)
 );
 
@@ -144,12 +167,16 @@ CREATE TABLE Zoo..produkty_wartosci_odzywcze (
 	foreign key(wartosc_odzywcza_id) references wartosci_odzywcze(wartosc_odzywcza_id)
 );
 GO
+
+--edit Gosia
 CREATE TABLE Zoo..magazyn (
     produkt_id int NOT NULL,
 	data_waznosci datetime NOT NULL,
 	ilosc int NOT NULL,
+	kierownik_id int NOT NULL,
     PRIMARY KEY (produkt_id, data_waznosci),
 	foreign key(produkt_id) references produkty(produkt_id),
+	foreign key(kierownik_id) references kierownicy(kierownik_id)
 );
 GO
 
@@ -165,7 +192,7 @@ CREATE TABLE Zoo..lekarz_zwierze (
 	lekarz_id int NOT NULL ,
 	zwierze_id int NOT NULL ,
 	lekarz_zwierze_id int NOT NULL ,
-	PRIMARY KEY (lekarz_id, zwierze_id),
+	PRIMARY KEY (lekarz_zwierze_id),
 	foreign key (lekarz_id) references lekarze(lekarz_id) ,
 	foreign key (zwierze_id) references zwierzeta(zwierze_id)
 );
@@ -177,14 +204,17 @@ CREATE TABLE Zoo..leki (
 	PRIMARY KEY (lek_id)
 );
 
+--edit Gosia 
 CREATE TABLE Zoo..zwierze_lek (
 	lekarz_zwierze_id int NOT NULL ,
 	lek_id int NOT NULL ,
 	dawkowanie_leku varchar(30) NOT NULL ,
 	porcjowanie_karmy float NOT NULL ,
+	kierownik_id int NOT NULL, 
 	PRIMARY KEY (lek_id, lekarz_zwierze_id),
 	foreign key (lekarz_zwierze_id) references lekarz_zwierze(lekarz_zwierze_id),
-	foreign key (lek_id) references leki(lek_id)
+	foreign key (lek_id) references leki(lek_id),
+	foreign key (kierownik_id) references kierownicy(kierownik_id)
 );
 
 --Arek010419
