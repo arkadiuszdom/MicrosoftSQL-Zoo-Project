@@ -1,7 +1,5 @@
 use Zoo
 
-
-
 if exists (select 1 from sys.objects where name = 'zapytanie_rozmyte')
 	drop function zapytanie_rozmyte
 go
