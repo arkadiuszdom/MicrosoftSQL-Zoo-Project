@@ -34,20 +34,34 @@ CREATE TABLE Zoo..pracownicy (
 	imie varchar(30) NOT NULL,
 	nazwisko varchar(30) NOT NULL,
 	kierownik_id int NOT NULL,
+	godzina_poczatkowa time NOT NULL, 
+	godzina_koncowa time NOT NULL,
+	zmiana varchar(1) not null,
     PRIMARY KEY (pracownik_id),
 	foreign key(kierownik_id) references kierownicy(kierownik_id)
 );
 GO
 
+create table Zoo..obowiazek ( 
+	obowiazek_id int not null primary key IDENTITY(1,1),
+	identyfikator varchar(4) not null, 
+	godzina_1 time not null, 
+	godzina_2 time not null, 
+	godzina_3 time, 
+	zmiana varchar(1), 
+	kierownik_id int not null, 
+	foreign key(kierownik_id) references kierownicy(kierownik_id)
+);
+
 --Gosia
 CREATE TABLE Zoo..grafik(
-	grafik_id int NOT NULL,
+	grafik_id int NOT NULL PRIMARY KEY IDENTITY(1,1),
 	pracownik_id int NOT NULL,
+	obowiazek_id int not null,
 	data DATE NOT NULL,
-	godz_poczatek TIME NOT NULL,
-	godz_koniec TIME NOT NULL,
-	PRIMARY KEY (grafik_id),
-	foreign key(pracownik_id) references pracownicy(pracownik_id)
+	zmiana varchar(1) not null,
+	foreign key(pracownik_id) references pracownicy(pracownik_id),
+	foreign key(obowiazek_id) references obowiazek(obowiazek_id)
 );
 GO
 
@@ -105,14 +119,20 @@ GO
 
 --edit Gosia 02/04/2019
 CREATE TABLE Zoo..pracownicy_klatki(
-	kierownik_id int NOT NULL,
+	pracownik_id int NOT NULL,
 	klatka_id int NOT NULL,
-    PRIMARY KEY (kierownik_id, klatka_id),
-	foreign key(kierownik_id) references kierownicy(kierownik_id),
+    PRIMARY KEY (pracownik_id, klatka_id),
+	foreign key(pracownik_id) references pracownicy(pracownik_id),
 	foreign key(klatka_id) references klatki(klatka_id)
 );
-
 GO
+
+create table Zoo..ilosc_zmian(
+	pracownik_id int not null, 
+	ilosc int,
+	primary key(pracownik_id),
+	foreign key(pracownik_id) references pracownicy(pracownik_id)
+);
 
 --Arek010419
 CREATE TABLE Zoo..plany_zywieniowe (

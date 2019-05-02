@@ -125,53 +125,86 @@ values (1,1,'King','20080715', '20100626', 1),
 	   (53,17,null,'20030823', '20101017',22),
 	   (54,17,null,'20031014', '20101017',22)
 
+insert into kierownicy (kierownik_id, imie, nazwisko, sektor)
+values (1, 'Jan', 'Kowalski', 'Naprawy'), 
+		(2, 'Anna', 'Nowak', 'Karmienie'), 
+		(3, 'Michal', 'Wisniewski', 'Leki'), 
+		(4, 'Adam', 'Michalski', 'Magazyn');
 
-insert into pracownicy (pracownik_id, imie, nazwisko, stanowisko)
-values (1,'Jan', 'Kowalski', 'Pomocnik'),
-		(2,'Jan', 'Nowak', 'Specjalista'),
-		(3,'Piotr', 'Wiœniewski', 'Treser'),
-		(4,'Pawe³', 'Kowalski', 'Pomocnik'),
-		(5,'Adam', 'Korzeniowski', 'Treser'),
-		(6,'Robert', 'Nowacki', 'Pomocnik'),
-		(7,'Aleksandra', 'Janicka', 'Pomocnik'),
-		(8,'Anna', 'Kowalska', 'Specjalista'),
-		(9,'Maria', 'Nowak', 'Pomocnik'),
-		(10,'Janina', 'Baranowska', 'Behawiorysta')
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create procedure dodaj_pracownika 
+	@id as int, @imie as varchar(30), @nazwisko as varchar(30), @kierownik_id as int, @godzina_p as time, @godzina_k as time
+	as
+	begin 
+	declare @zmiana as varchar(1)
+	if @godzina_p = '7:00' 
+		set @zmiana = 'p'
+	else 
+		if @godzina_p = '15:00'
+			set @zmiana = 'w'
+		else 
+			Print 'nieodpowiednia godzina rozpoczecia pracy, prosze zmienic'
+	if @zmiana = 'w' or @zmiana = 'p'
+	insert into Zoo..pracownicy values(@id, @imie, @nazwisko, @kierownik_id, @godzina_p, @godzina_k, @zmiana)
+	insert into Zoo..ilosc_zmian values(@id, 0)
+	end 
+go
+
+exec dodaj_pracownika 11, 'A', 'A', 1, '7:00', '15:00';
+exec dodaj_pracownika 12, 'B', 'B', 1, '7:00', '15:00';
+exec dodaj_pracownika 13, 'C', 'C', 1, '15:00', '22:00';
+exec dodaj_pracownika 21, 'D', 'D', 2, '7:00', '15:00';
+exec dodaj_pracownika 22, 'E', 'E', 2, '15:00', '22:00';
+exec dodaj_pracownika 31, 'A1', 'A1', 3, '7:00', '15:00';
+exec dodaj_pracownika 32, 'B1', 'B1', 3, '7:00', '15:00';
+exec dodaj_pracownika 33, 'C1', 'C1', 3, '7:00', '15:00';
+exec dodaj_pracownika 34, 'D1', 'D1', 3, '15:00', '22:00';
+
+select * from ilosc_zmian
 
 insert into pracownicy_klatki(pracownik_id, klatka_id)
-values (1,1),
-		(2,1),
-		(10,1),
-		(1,2),
-		(2,2),
-		(5,2),  
-		(6,3),
-		(7,3),
-		(8,3),
-		(10,3),
-		(1,4),
-		(2,5),
-		(1,6),
-		(7,6),
-		(1,9),
-		(2,9),
-		(6,10),
-		(8,11),
-		(9,11),
-		(10,11),
-		(5,12),
-		(2,13),
-		(5,13),  
-		(6,14),
-		(7,15),
-		(5,16),
-		(7,16),
-		(10,16),
-		(5,17),
-		(1,18),
-		(5,19),
-		(6,20),
-		(8,20),
-		(2,21),
-		(10,21)
+values (11,1),
+		(21,1),
+		(31,1),
+		(12,2),
+		(22,2),
+		(32,2),  
+		(13,3),
+		(21,3),
+		(33,3),
+		(34,3),
+		(11,4),
+		(21,5),
+		(22,6),
+		(31,6),
+		(12,9),
+		(32,9),
+		(13,10),
+		(11,11),
+		(21,11),
+		(33,11),
+		(34,12),
+		(12,13),
+		(13,13),  
+		(22,14),
+		(21,15),
+		(33,16),
+		(34,16),
+		(21,16),
+		(13,17),
+		(12,18),
+		(33,19),
+		(31,20),
+		(34,20),
+		(21,21),
+		(11,21)
 		
+insert into Zoo..obowiazek values('kr', '8:00', '11:00', '14:00', 'p', 3);
+insert into Zoo..obowiazek values('kw', '17:00', '20:00', '22:00', 'w', 3);
+insert into Zoo..obowiazek values('sr', '8:00', '11:00', '14:00', 'p', 2);
+insert into Zoo..obowiazek values('sw', '17:00', '20:00', '22:00', 'w', 2);
+insert into Zoo..obowiazek values('lr', '8:00', '11:00', '14:00', 'p', 1);
+insert into Zoo..obowiazek values('lw', '17:00', '20:00', '22:00', 'w', 1);
