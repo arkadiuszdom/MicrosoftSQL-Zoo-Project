@@ -162,8 +162,10 @@ exec dodaj_pracownika 31, 'A1', 'A1', 3, '7:00', '15:00';
 exec dodaj_pracownika 32, 'B1', 'B1', 3, '7:00', '15:00';
 exec dodaj_pracownika 33, 'C1', 'C1', 3, '7:00', '15:00';
 exec dodaj_pracownika 34, 'D1', 'D1', 3, '15:00', '22:00';
-
-select * from ilosc_zmian
+exec dodaj_pracownika 41, 'D11', 'D1', 4, '7:00', '15:00';
+exec dodaj_pracownika 42, 'D11', 'D1', 4, '7:00', '15:00';
+exec dodaj_pracownika 43, 'D11', 'D1', 4, '7:00', '15:00';
+exec dodaj_pracownika 44, 'D11', 'D1', 4, '15:00', '22:00';
 
 insert into pracownicy_klatki(pracownik_id, klatka_id)
 values (11,1),
@@ -208,3 +210,10 @@ insert into Zoo..obowiazek values('sr', '8:00', '11:00', '14:00', 'p', 2);
 insert into Zoo..obowiazek values('sw', '17:00', '20:00', '22:00', 'w', 2);
 insert into Zoo..obowiazek values('lr', '8:00', '11:00', '14:00', 'p', 1);
 insert into Zoo..obowiazek values('lw', '17:00', '20:00', '22:00', 'w', 1);
+
+insert into Zoo..magazyn (produkt_id, typ_produktu, data_waznosci, ilosc, ilosc_minimalna, ilosc_maksymalna, kierownik_id) 
+values (1, 'K', '03-03-2020', 1200, 200, 2000, 2), 
+	(2, 'K', '03-03-2020', 1200, 200, 2000, 2),
+	(3, 'K',  '03-03-2020', 1200, 200, 2000, 2),
+	(4, 'L',  '03-03-2020', 1200, 200, 2000, 3),
+	(5, 'L', '03-03-2020', 1200, 200, 2000, 3);

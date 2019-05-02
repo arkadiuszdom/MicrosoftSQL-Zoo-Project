@@ -191,11 +191,15 @@ GO
 --edit Gosia
 CREATE TABLE Zoo..magazyn (
     produkt_id int NOT NULL,
+	typ_produktu varchar(1) not null,
 	data_waznosci datetime NOT NULL,
 	ilosc int NOT NULL,
+	ilosc_minimalna int not null, 
+	ilosc_maksymalna int not null,
 	kierownik_id int NOT NULL,
+	ostatnie_uzupelnienie int,
     PRIMARY KEY (produkt_id, data_waznosci),
-	foreign key(produkt_id) references produkty(produkt_id),
+	--foreign key(produkt_id) references produkty(produkt_id),
 	foreign key(kierownik_id) references kierownicy(kierownik_id)
 );
 GO
