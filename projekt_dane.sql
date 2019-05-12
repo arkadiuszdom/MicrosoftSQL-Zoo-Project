@@ -211,9 +211,36 @@ insert into Zoo..obowiazek values('sw', '17:00', '20:00', '22:00', 'w', 2);
 insert into Zoo..obowiazek values('lr', '8:00', '11:00', '14:00', 'p', 1);
 insert into Zoo..obowiazek values('lw', '17:00', '20:00', '22:00', 'w', 1);
 
-insert into Zoo..magazyn (produkt_id, typ_produktu, data_waznosci, ilosc, ilosc_minimalna, ilosc_maksymalna, kierownik_id) 
-values (1, 'K', '03-03-2020', 1200, 200, 2000, 2), 
-	(2, 'K', '03-03-2020', 1200, 200, 2000, 2),
-	(3, 'K',  '03-03-2020', 1200, 200, 2000, 2),
-	(4, 'L',  '03-03-2020', 1200, 200, 2000, 3),
-	(5, 'L', '03-03-2020', 1200, 200, 2000, 3);
+insert into Zoo..magazyn (produkt_id, typ_produktu, nazwa, ilosc, ilosc_minimalna, ilosc_maksymalna, kierownik_id) 
+values (1, 'K', 'Ser', 1200, 200, 2000, 2), 
+	(2, 'K', 'Dziczyzna', 1200, 200, 2000, 2),
+	(3, 'K',  'Jab³ko', 1200, 200, 2000, 2),
+	(4, 'L',  'Mleko', 1200, 200, 2000, 3),
+	(5, 'L', 'Woda', 1200, 200, 2000, 3);
+
+
+insert into Zoo..plany_zywieniowe values (1,'Du¿e koty'),(2,'Chore du¿e koty')
+
+insert into Zoo..gatunki_plany_zywieniowe values
+	(1, 1), --'Du¿e koty', Lew
+	(1, 15) --'Du¿e koty', Rys
+
+insert into Zoo..indywidualne_plany_zywieniowe values 
+	(2, 4) -- 'Chore du¿e koty', 'Alex'
+
+insert into Zoo..wartosci_odzywcze values (1,'Bia³ko'),(2,'Wêglowodany'),(3, '¯elazo')
+
+insert into Zoo..plany_zywieniowe_wartosci_odzywcze values
+	(1, 1, 30), --'Du¿e koty', Bia³ko
+	(1, 2, 10), --'Du¿e koty', Wêglowodany
+	(2, 1, 20), --'Chore du¿e koty', Bia³ko
+	(2, 2, 15), --'Chore du¿e koty', Wêglowodany
+	(2, 3, 5) --'Chore du¿e koty', ¯elazo
+
+insert into Zoo..produkty_wartosci_odzywcze values
+	(1, 1),
+	(2, 1),
+	(2, 2),
+	(4, 1),
+	(4, 3),
+
