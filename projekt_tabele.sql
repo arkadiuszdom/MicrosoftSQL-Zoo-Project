@@ -226,6 +226,15 @@ CREATE TABLE Zoo..plany_zywieniowe_wartosci_odzywcze (
 	foreign key(wartosc_odzywcza_id) references wartosci_odzywcze(wartosc_odzywcza_id)
 );
 GO
+--Arek 20.05.19
+CREATE TABLE Zoo..wartosci_rozmyte_atrybutu_dojrzalosc_plciowa(
+	gatunek_id int NOT NULL,
+	odleglosc_do_lewego_kranca int NOT NULL,
+	odleglosc_do_prawego_kranca int NOT NULL,
+	PRIMARY KEY(gatunek_id, odleglosc_do_lewego_kranca, odleglosc_do_prawego_kranca),
+	foreign key(gatunek_id) references gatunki(gatunek_id)
+);
+GO
 --edit Arek 12.05.19 usunieto tabele produkty, ujednoliconi=o ja z magazyn, przepisano kluczobcy prod-wart.odz.
 CREATE TABLE Zoo..produkty_wartosci_odzywcze (
     produkt_id int NOT NULL,
@@ -235,6 +244,7 @@ CREATE TABLE Zoo..produkty_wartosci_odzywcze (
 	foreign key(wartosc_odzywcza_id) references wartosci_odzywcze(wartosc_odzywcza_id)
 );
 GO
+
 
 
 --Robert&Rafał

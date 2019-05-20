@@ -242,5 +242,11 @@ insert into Zoo..produkty_wartosci_odzywcze values
 	(2, 1),
 	(2, 2),
 	(4, 1),
-	(4, 3),
+	(4, 3)
+
+insert into Zoo..wartosci_rozmyte_atrybutu_dojrzalosc_plciowa values
+	(1, 2, 5),
+	(2, 1, 1),
+	(3, 3, 4)
+
 
