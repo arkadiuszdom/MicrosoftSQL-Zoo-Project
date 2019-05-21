@@ -249,4 +249,12 @@ insert into Zoo..wartosci_rozmyte_atrybutu_dojrzalosc_plciowa values
 	(2, 1, 1),
 	(3, 3, 4)
 
+insert into Zoo..Promocja values
+	(1,0,'Standard'),
+	(2,30,'Uczen'),
+	(3,50,'Student'),
+	(4,70,'Dziecko do 6 lat'),
+	(5,95,'Urodziny'),
+	(6,50,'Senior'),
+	(7,40,'Tanie Wtorki')
 
