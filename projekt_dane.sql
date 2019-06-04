@@ -166,11 +166,6 @@ exec dodaj_pracownika 41, 'D11', 'D1', 4, '7:00', '15:00';
 exec dodaj_pracownika 42, 'D11', 'D1', 4, '7:00', '15:00';
 exec dodaj_pracownika 43, 'D11', 'D1', 4, '7:00', '15:00';
 exec dodaj_pracownika 44, 'D11', 'D1', 4, '15:00', '22:00';
-exec dodaj_pracownika 23, 'D', 'D', 2, '7:00', '15:00';
-exec dodaj_pracownika 24, 'D', 'D', 2, '7:00', '15:00';
-exec dodaj_pracownika 25, 'D', 'D', 2, '7:00', '15:00';
-exec dodaj_pracownika 26, 'D', 'D', 2, '7:00', '15:00';
-exec dodaj_pracownika 27, 'D', 'D', 2, '7:00', '15:00';
 
 insert into pracownicy_klatki(pracownik_id, klatka_id)
 values (11,1),
@@ -207,12 +202,7 @@ values (11,1),
 		(31,20),
 		(34,20),
 		(21,21),
-		(11,21),
-		(27,9),
-		(26,9),
-		(23,9),
-		(24,9),
-		(25,9)
+		(11,21)
 		
 insert into Zoo..obowiazek values('kr', '8:00', '11:00', '14:00', 'p', 3);
 insert into Zoo..obowiazek values('kw', '17:00', '20:00', '22:00', 'w', 3);
@@ -236,7 +226,7 @@ insert into Zoo..gatunki_plany_zywieniowe values
 	(1, 15) --'Du¿e koty', Rys
 
 insert into Zoo..indywidualne_plany_zywieniowe values 
-	(2, 4, '2019-04-04', '2019-07-03') -- 'Chore du¿e koty', 'Alex'
+	(2, 4) -- 'Chore du¿e koty', 'Alex'
 
 insert into Zoo..wartosci_odzywcze values (1,'Bia³ko'),(2,'Wêglowodany'),(3, '¯elazo')
 
@@ -253,3 +243,18 @@ insert into Zoo..produkty_wartosci_odzywcze values
 	(2, 2),
 	(4, 1),
 	(4, 3)
+
+insert into Zoo..wartosci_rozmyte_atrybutu_dojrzalosc_plciowa values
+	(1, 2, 5),
+	(2, 1, 1),
+	(3, 3, 4)
+
+insert into Zoo..Promocja values
+	(1,0,'Standard'),
+	(2,30,'Uczen'),
+	(3,50,'Student'),
+	(4,70,'Dziecko do 6 lat'),
+	(5,95,'Urodziny'),
+	(6,50,'Senior'),
+	(7,40,'Tanie Wtorki')
+

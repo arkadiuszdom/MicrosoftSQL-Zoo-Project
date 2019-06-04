@@ -1,4 +1,7 @@
 use zoo
+
+
+
 if exists (select 1 from sys.objects where name = 'wybierz_plan_zywnosciowy')
 	drop function wybierz_plan_zywnosciowy
 go
@@ -22,7 +25,60 @@ BEGIN
 END
 go
 
+if exists (select 1 from sys.objects where name = 'ustal_przelicznik_ilosci_wartosci_odzywczej_uzalezniony_od_wieku_zwierzecia')
+	drop function ustal_przelicznik_ilosci_wartosci_odzywczej_uzalezniony_od_wieku_zwierzecia
+go
 
+create function ustal_przelicznik_ilosci_wartosci_odzywczej_uzalezniony_od_wieku_zwierzecia(@zwierze_id int) returns float as
+BEGIN
+	DECLARE @przelicznik_ilosci_wartosci_odzywczej_uzalezniony_od_wieku_zwierzecia float;
+
+	DECLARE @gatunek_id int, @wiek int;
+	SET @wiek=0;
+	SELECT @gatunek_id=gatunek_id, @wiek=datediff(year, data_urodzenia, getdate())  FROM zwierzeta WHERE data_urodzenia IS NOT NULL AND zwierze_id=@zwierze_id;
+
+	IF @wiek = 0 
+	BEGIN 
+		RETURN 1.0;
+	END
+	
+	DECLARE @wiek_dojrzalosci int;
+	SELECT @wiek_dojrzalosci=wiek_dojrzalosci FROM gatunki WHERE gatunek_id=@gatunek_id;
+	
+	DECLARE @odleglosc_do_lewego_kranca int, @odleglosc_do_prawego_kranca int;
+	SET @odleglosc_do_lewego_kranca=0;
+	SET @odleglosc_do_prawego_kranca=0;
+	SELECT @odleglosc_do_lewego_kranca = odleglosc_do_lewego_kranca, @odleglosc_do_prawego_kranca=odleglosc_do_prawego_kranca FROM wartosci_rozmyte_atrybutu_dojrzalosc_plciowa WHERE @gatunek_id=gatunek_id;
+	
+	DECLARE @stosunek float;
+	SET @stosunek=round(@wiek/@wiek_dojrzalosci,2);
+	IF @stosunek>1
+	BEGIN
+		SET @stosunek=round(1/@stosunek,2);
+	END
+	SET @przelicznik_ilosci_wartosci_odzywczej_uzalezniony_od_wieku_zwierzecia=@stosunek;
+
+	IF @wiek > @wiek_dojrzalosci AND @wiek < @wiek_dojrzalosci+@odleglosc_do_prawego_kranca
+	BEGIN	
+		SET @przelicznik_ilosci_wartosci_odzywczej_uzalezniony_od_wieku_zwierzecia=ROUND(@wiek/(2*@wiek_dojrzalosci+@odleglosc_do_prawego_kranca),2);
+	END
+
+	ELSE IF @wiek < @wiek_dojrzalosci AND @wiek > @wiek_dojrzalosci-@odleglosc_do_lewego_kranca
+	BEGIN
+		SET @przelicznik_ilosci_wartosci_odzywczej_uzalezniony_od_wieku_zwierzecia=ROUND(@wiek/(2*@wiek_dojrzalosci-@odleglosc_do_lewego_kranca),2);
+	END
+	
+	
+	IF @stosunek > @przelicznik_ilosci_wartosci_odzywczej_uzalezniony_od_wieku_zwierzecia
+	BEGIN
+		SET @przelicznik_ilosci_wartosci_odzywczej_uzalezniony_od_wieku_zwierzecia=@stosunek;
+	END
+
+	RETURN @przelicznik_ilosci_wartosci_odzywczej_uzalezniony_od_wieku_zwierzecia;
+END
+go
+DROP VIEW view_get_newid;
+GO
 CREATE VIEW view_get_newid
 AS
 SELECT NEWID() AS Value
@@ -34,11 +90,14 @@ go
 create function dobierz_produkty_dla_zwierzecia(@zwierze_id int) RETURNS @produkty_dla_zwierzecia TABLE (produkt_id int, ilosc int)
 as
 BEGIN
+	declare @przelicznik_ilosci_wartosci_odzywczej_uzalezniony_od_wieku_zwierzecia float; 
+	set @przelicznik_ilosci_wartosci_odzywczej_uzalezniony_od_wieku_zwierzecia = dbo.ustal_przelicznik_ilosci_wartosci_odzywczej_uzalezniony_od_wieku_zwierzecia(@zwierze_id); 
+
 	declare @plan_zywieniowy_id int;
 	set @plan_zywieniowy_id = dbo.wybierz_plan_zywnosciowy(@zwierze_id);  
 
 	declare @potrzebne_wartosc_odzywcze table( wartosc_odzywcza_id int, ilosc int);
-	INSERT INTO @potrzebne_wartosc_odzywcze SELECT wartosc_odzywcza_id, ilosc FROM plany_zywieniowe_wartosci_odzywcze WHERE plan_zywieniowy_id=@plan_zywieniowy_id;
+	INSERT INTO @potrzebne_wartosc_odzywcze SELECT wartosc_odzywcza_id, floor(ilosc * @przelicznik_ilosci_wartosci_odzywczej_uzalezniony_od_wieku_zwierzecia) FROM plany_zywieniowe_wartosci_odzywcze WHERE plan_zywieniowy_id=@plan_zywieniowy_id;
 
 
 	declare @wartosci_odzywcze_z_magazynu table( wartosc_odzywcza_id int );
@@ -102,11 +161,10 @@ BEGIN
 			DELETE FROM @potrzebne_wartosc_odzywcze WHERE ilosc = 0;
 		END;
 		RETURN;
-
-
 end
 go
 
-select * from dobierz_produkty_dla_zwierzecia(9);
-
-select * from zwierzeta where klatka_id = 9
+select * from dobierz_produkty_dla_zwierzecia(3);
+select * from dobierz_produkty_dla_zwierzecia(1);
+select * from dobierz_produkty_dla_zwierzecia(2);
+select * from dobierz_produkty_dla_zwierzecia(4);

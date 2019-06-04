@@ -1,4 +1,3 @@
-
 if exists(select 1 from master.dbo.sysdatabases where name = 'Zoo') drop database Zoo
 GO
 CREATE DATABASE Zoo
@@ -154,16 +153,16 @@ CREATE TABLE Zoo..lekarze (
 	lekarz_id int NOT NULL ,
 	imie varchar(30) NOT NULL,
 	nazwisko varchar(30) NOT NULL,
-	ilosc_zmian int,
     PRIMARY KEY (lekarz_id)
 );
 GO
 
 CREATE TABLE Zoo..lekarz_zwierze (
-	lekarz_id int,
-	zwierze_id int,
-	lekarz_zwierze_id int  primary key IDENTITY(1,1),
-	foreign key (lekarz_id) references lekarze(lekarz_id),
+	lekarz_id int NOT NULL ,
+	zwierze_id int NOT NULL ,
+	lekarz_zwierze_id int NOT NULL ,
+	PRIMARY KEY (lekarz_zwierze_id),
+	foreign key (lekarz_id) references lekarze(lekarz_id) ,
 	foreign key (zwierze_id) references zwierzeta(zwierze_id)
 );
 GO
@@ -206,8 +205,7 @@ GO
 CREATE TABLE Zoo..indywidualne_plany_zywieniowe (
     plan_zywieniowy_id int NOT NULL,
     zwierze_id int NOT NULL,
-	data_poczatek date, 
-	data_koniec date,
+    PRIMARY KEY (plan_zywieniowy_id, zwierze_id),
 	foreign key(zwierze_id) references zwierzeta(zwierze_id),
 	foreign key(plan_zywieniowy_id) references plany_zywieniowe(plan_zywieniowy_id)
 );
@@ -227,6 +225,15 @@ CREATE TABLE Zoo..plany_zywieniowe_wartosci_odzywcze (
 	foreign key(wartosc_odzywcza_id) references wartosci_odzywcze(wartosc_odzywcza_id)
 );
 GO
+--Arek 20.05.19
+CREATE TABLE Zoo..wartosci_rozmyte_atrybutu_dojrzalosc_plciowa(
+	gatunek_id int NOT NULL,
+	odleglosc_do_lewego_kranca int NOT NULL,
+	odleglosc_do_prawego_kranca int NOT NULL,
+	PRIMARY KEY(gatunek_id, odleglosc_do_lewego_kranca, odleglosc_do_prawego_kranca),
+	foreign key(gatunek_id) references gatunki(gatunek_id)
+);
+GO
 --edit Arek 12.05.19 usunieto tabele produkty, ujednoliconi=o ja z magazyn, przepisano kluczobcy prod-wart.odz.
 CREATE TABLE Zoo..produkty_wartosci_odzywcze (
     produkt_id int NOT NULL,
@@ -238,14 +245,21 @@ CREATE TABLE Zoo..produkty_wartosci_odzywcze (
 GO
 
 
+
 --Robert&Rafał
+GO
+CREATE TABLE Zoo..Rezerwacja(
+	#id_rezerwacji  int NOT NULL,
+	Ilosc_osob int NOT NULL,
+	PRIMARY KEY (#id_rezerwacji)
+	);
 
 GO
 CREATE TABLE Zoo..Promocja(
 	#id_promocji int NOT NULL,
 	procent_obnizki int NOT NULL,
 	nazwa varchar NOT NULL,
-	PRIMARY KEY (#id_promocji),
+	PRIMARY KEY (#id_promocji)
 
 	);
 GO
@@ -253,20 +267,24 @@ CREATE TABLE Zoo..Bilety(
 	#id_biletu int NOT NULL,
 	pawilon_id int NOT NULL,
 	termin date NOT NULL,
+	id_rezerwacji int,
 	obnizka int,
-	cena int NOT NULL
+	cena int NOT NULL,
 	PRIMARY KEY (#id_biletu),
 	foreign key (pawilon_id) references Zoo..pawilony(pawilon_id),
 	foreign key (obnizka) references Zoo..Promocja(#id_promocji),
+	FOREIGN KEY (id_rezerwacji) references Zoo..Rezerwacja(#id_rezerwacji)
 	 );
 GO
-CREATE TABLE Zoo..Rezerwacja(
-	#id_rezerwacji  int NOT NULL,
+CREATE TABLE Zoo..PawilonyBilety(
 	#id_biletu int NOT NULL,
-	ilosc_osob int NOT NULL,
-	PRIMARY KEY (#id_rezerwacji),
-	FOREIGN KEY (#id_biletu) references Zoo..Bilety(#id_biletu),
+	pawilon_id int NOT NULL,
+	Liczba_pawilonow int NOT NULL,
+	foreign key (#id_biletu) references Zoo..Bilety(#id_biletu),
+	foreign key (pawilon_id) references Zoo..pawilony(pawilon_id)
 	);
+	
+
 GO
 CREATE TABLE Zoo..Opinie(
 	#id_opini int NOT NULL,
@@ -276,7 +294,7 @@ CREATE TABLE Zoo..Opinie(
 	komentarz varchar(255),
 	PRIMARY KEY (#id_opini),
 	FOREIGN KEY (#id_biletu) references Zoo..Bilety(#id_biletu),
-	FOREIGN KEY (pawilon_id) references Zoo..pawilony(pawilon_id),
+	FOREIGN KEY (pawilon_id) references Zoo..pawilony(pawilon_id)
 	);
 GO
 CREATE TABLE Zoo..Zaplata(
@@ -287,5 +305,3 @@ CREATE TABLE Zoo..Zaplata(
 	PRIMARY KEY (#id_transakcji),
 	FOREIGN KEY (id_biletow) references Zoo..Bilety(#id_biletu)
 	);
-
-
