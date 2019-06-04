@@ -78,6 +78,8 @@ CREATE TABLE Zoo..pawilony (
 	biom_id int NOT NULL,
     PRIMARY KEY (pawilon_id),
 	foreign key(biom_id) references biomy(biom_id)
+	
+
 );
 GO
 CREATE TABLE Zoo..gatunki (
@@ -253,45 +255,45 @@ CREATE TABLE Zoo..Rezerwacja(
 	Ilosc_osob int NOT NULL,
 	PRIMARY KEY (#id_rezerwacji)
 	);
+	INSERT INTO Zoo..Rezerwacja (#id_rezerwacji,Ilosc_osob) VALUES (1,1)
 
 GO
 CREATE TABLE Zoo..Promocja(
 	#id_promocji int NOT NULL,
 	procent_obnizki int NOT NULL,
-	nazwa varchar NOT NULL,
+	nazwa varchar(40) NOT NULL,
 	PRIMARY KEY (#id_promocji)
 
 	);
-GO
-CREATE TABLE Zoo..Bilety(
+--drop TABLE Zoo..Bilety
+GO 
+create TABLE Zoo..Bilety(
 	#id_biletu int NOT NULL,
-	pawilon_id int NOT NULL,
+	#id_pawilonow NVARCHAR(max) NOT NULL,
+	#id_obnizki int NOT NULL,
 	termin date NOT NULL,
 	id_rezerwacji int,
 	obnizka int,
-	cena int NOT NULL,
+	cena float NOT NULL,
 	PRIMARY KEY (#id_biletu),
-	foreign key (pawilon_id) references Zoo..pawilony(pawilon_id),
-	foreign key (obnizka) references Zoo..Promocja(#id_promocji),
+	FOREIGN key (#id_obnizki) references Zoo..Promocja(#id_promocji),
 	FOREIGN KEY (id_rezerwacji) references Zoo..Rezerwacja(#id_rezerwacji)
-	 );
+	 ); 
 GO
 CREATE TABLE Zoo..PawilonyBilety(
-	#id_biletu int NOT NULL,
+	#id_biletu int NOT NULL ,
 	pawilon_id int NOT NULL,
-	Liczba_pawilonow int NOT NULL,
 	foreign key (#id_biletu) references Zoo..Bilety(#id_biletu),
-	foreign key (pawilon_id) references Zoo..pawilony(pawilon_id)
-	);
-	
+	foreign key (pawilon_id) references Zoo..Pawilony(pawilon_id)
+	); 	
 
 GO
 CREATE TABLE Zoo..Opinie(
-	#id_opini int NOT NULL,
-	#id_biletu int NOT NULL,
+	#id_opini int NOT NULL unique,
+	#id_biletu int NOT NULL,	
 	pawilon_id int NOT NULL,
-	ocena int NOT NULL,
-	komentarz varchar(255),
+	ocena int NOT NULL check (ocena between 1 and 5),
+	komentarz nvarchar(510),
 	PRIMARY KEY (#id_opini),
 	FOREIGN KEY (#id_biletu) references Zoo..Bilety(#id_biletu),
 	FOREIGN KEY (pawilon_id) references Zoo..pawilony(pawilon_id)

@@ -253,8 +253,16 @@ insert into Zoo..Promocja values
 	(1,0,'Standard'),
 	(2,30,'Uczen'),
 	(3,50,'Student'),
-	(4,70,'Dziecko do 6 lat'),
-	(5,95,'Urodziny'),
+	(4,70,'Dzieckodo6lat'),
+	(5,80,'Urodziny'),
 	(6,50,'Senior'),
-	(7,40,'Tanie Wtorki')
+	(7,80,'TanieWtorki')
+
+insert into Zoo..PawilonyBilety 
+	(#id_biletu,pawilon_id) 
+	values (1,1)
+
+iNSERT INTO Zoo..Bilety 
+	(#id_biletu,#id_pawilonow,termin,cena,#id_obnizki) 
+	VALUES (1,'1','2020-09-09',20, 1)
 
