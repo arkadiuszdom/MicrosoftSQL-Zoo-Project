@@ -49,7 +49,9 @@ DECLARE
 	@Procent int,
 	@Ilosc int
 begin
-
+	if (@kiedy < CONVERT(date, GETDATE()))
+	RAISERROR('Nie mozna rezerwować w przeszlości', 17, 1);
+	else
 	SELECT @Procent = procent_obnizki From Zoo..Promocja where Zoo..Promocja.#id_promocji = @promocjaid 
 	SELECT @IdBiletu =  MAX(#id_biletu)+1 from Zoo..Bilety
 	SELECT @Ilosc = (len(@ktore_pawilony) - len(replace(@ktore_pawilony, ',', '')))+1
