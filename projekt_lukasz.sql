@@ -1,7 +1,5 @@
 use Zoo
 
-
---zmieniona tabela indywidualne... 
 create table badania (
 	lekarz_id int,
 	zwierze_id int not null, 
@@ -9,15 +7,17 @@ create table badania (
 
 insert into badania(zwierze_id) select zwierze_id from zwierzeta
 
-insert into lekarze values (1, 'a', 'a', 0), (2, 'b', 'b', 0), (3, 'c', 'c', 0), (4, 'd', 'd', 0)
+insert into lekarze values (1, 'Anna', 'Nowicka', 0), (2, 'Julian', 'Marcinkowski', 0), (3, 'Jan', 'Wybicki', 0), (4, 'Eliza', 'Durma', 0)
 
 create table lek_plan (id_leku int, id_planu int, 
 foreign key(id_leku) references leki(lek_id),
 foreign key(id_planu) references plany_zywieniowe(plan_zywieniowy_id))
 
-insert into leki values (6, 'a'), (7, 'b'), (8, 'c') --to zmienic na 6, 7, 8
+select * from magazyn
+
+insert into leki values (6, 'Witamina C'), (7, 'Pyralgina'), (8, 'Aspiryna')
 insert into lek_plan values (7,1), (6,2)
-insert into magazyn values  (6, 'Lek1', 'L', 100, 10, 200, 3, null), (7, 'Lek2', 'L', 100, 10, 200, 3, null)
+insert into magazyn values  (6, 'Witamina C', 'L', 100, 10, 200, 3, null), (7, 'Pyralgina', 'L', 100, 10, 200, 3, null)
 
 insert into lekarz_zwierze(zwierze_id, lekarz_id)
 values (1,1),
@@ -78,6 +78,7 @@ go
 
 select * from zwierzeta
 select * from lekarz_zwierze
+
 --sprawdzenie czy dziala
 insert into zwierzeta(zwierze_id, gatunek_id, imie, data_przybycia, klatka_id) values (67,1,'Leo', '2019-02-02', 2)
 
@@ -170,13 +171,10 @@ begin
 	end
 end 
 
-select * from zwierze_lek
---te tabele chyba trzeba usunac 
 select * from lek_plan
 select id_planu from lek_plan
 select * from indywidualne_plany_zywieniowe
 
-drop procedure leki_i_karma
 select * from zwierzeta where zwierze_id = 9
 select * from magazyn
 select * from lek_plan
@@ -184,4 +182,3 @@ select * from indywidualne_plany_zywieniowe
 
 
 exec leki_i_karma 9, 7, '2020-04-06', '2020-04-09', 5
-select datediff(day, '2019-04-06', '2019-04-09') as datediff

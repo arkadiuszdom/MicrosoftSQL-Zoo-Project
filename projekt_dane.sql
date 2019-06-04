@@ -153,19 +153,24 @@ create procedure dodaj_pracownika
 	end 
 go
 
-exec dodaj_pracownika 11, 'A', 'A', 1, '7:00', '15:00';
-exec dodaj_pracownika 12, 'B', 'B', 1, '7:00', '15:00';
-exec dodaj_pracownika 13, 'C', 'C', 1, '15:00', '22:00';
-exec dodaj_pracownika 21, 'D', 'D', 2, '7:00', '15:00';
-exec dodaj_pracownika 22, 'E', 'E', 2, '15:00', '22:00';
-exec dodaj_pracownika 31, 'A1', 'A1', 3, '7:00', '15:00';
-exec dodaj_pracownika 32, 'B1', 'B1', 3, '7:00', '15:00';
-exec dodaj_pracownika 33, 'C1', 'C1', 3, '7:00', '15:00';
-exec dodaj_pracownika 34, 'D1', 'D1', 3, '15:00', '22:00';
-exec dodaj_pracownika 41, 'D11', 'D1', 4, '7:00', '15:00';
-exec dodaj_pracownika 42, 'D11', 'D1', 4, '7:00', '15:00';
-exec dodaj_pracownika 43, 'D11', 'D1', 4, '7:00', '15:00';
-exec dodaj_pracownika 44, 'D11', 'D1', 4, '15:00', '22:00';
+exec dodaj_pracownika 11, 'Anna', 'Nowak', 1, '7:00', '15:00';
+exec dodaj_pracownika 12, 'Bogdan', 'Mi³y', 1, '7:00', '15:00';
+exec dodaj_pracownika 13, 'Juliusz', 'Seweryn', 1, '15:00', '22:00';
+exec dodaj_pracownika 21, 'Dominika', 'Milska', 2, '7:00', '15:00';
+exec dodaj_pracownika 22, 'Joanna', 'Elipsa', 2, '15:00', '22:00';
+exec dodaj_pracownika 31, 'Jan', 'Michalak', 3, '7:00', '15:00';
+exec dodaj_pracownika 32, 'Andrzej', 'Piotrowski', 3, '7:00', '15:00';
+exec dodaj_pracownika 33, 'Piotr', 'Michalski', 3, '7:00', '15:00';
+exec dodaj_pracownika 34, 'Aleksandra', 'Berent', 3, '15:00', '22:00';
+exec dodaj_pracownika 41, 'Michalina', 'Soroka', 4, '7:00', '15:00';
+exec dodaj_pracownika 42, 'Julia', 'Jankowska', 4, '7:00', '15:00';
+exec dodaj_pracownika 43, 'Anna', 'Mi³oszewska', 4, '7:00', '15:00';
+exec dodaj_pracownika 44, 'Eliza', 'Lipczyk', 4, '15:00', '22:00';
+exec dodaj_pracownika 23, 'Marian', 'Dziomdziora', 2, '7:00', '15:00';		
+exec dodaj_pracownika 24, 'El¿bieta', 'Seweryn', 2, '7:00', '15:00';		
+exec dodaj_pracownika 25, 'Dagmara', 'Groch', 2, '7:00', '15:00';		
+exec dodaj_pracownika 26, 'Joanna', 'Pisarczyk', 2, '7:00', '15:00';		
+exec dodaj_pracownika 27, 'Damian', 'Mi³ek', 2, '7:00', '15:00';
 
 insert into pracownicy_klatki(pracownik_id, klatka_id)
 values (11,1),
@@ -202,7 +207,12 @@ values (11,1),
 		(31,20),
 		(34,20),
 		(21,21),
-		(11,21)
+		(11,21),				
+		(27,9),		
+		(26,9),		
+		(23,9),		
+		(24,9),		
+		(25,9)
 		
 insert into Zoo..obowiazek values('kr', '8:00', '11:00', '14:00', 'p', 3);
 insert into Zoo..obowiazek values('kw', '17:00', '20:00', '22:00', 'w', 3);
@@ -225,8 +235,8 @@ insert into Zoo..gatunki_plany_zywieniowe values
 	(1, 1), --'Du¿e koty', Lew
 	(1, 15) --'Du¿e koty', Rys
 
-insert into Zoo..indywidualne_plany_zywieniowe values 
-	(2, 4) -- 'Chore du¿e koty', 'Alex'
+insert into Zoo..indywidualne_plany_zywieniowe values
+	(2, 4, '2019-04-04', '2019-07-03') -- 'Chore du¿e koty', 'Alex'
 
 insert into Zoo..wartosci_odzywcze values (1,'Bia³ko'),(2,'Wêglowodany'),(3, '¯elazo')
 
@@ -258,11 +268,12 @@ insert into Zoo..Promocja values
 	(6,50,'Senior'),
 	(7,80,'TanieWtorki')
 
+iNSERT INTO Zoo..Bilety 
+(#id_biletu,#id_pawilonow,termin,cena,#id_obnizki) 
+VALUES (1,'1','2020-09-09',20, 1)
+
 insert into Zoo..PawilonyBilety 
 	(#id_biletu,pawilon_id) 
 	values (1,1)
 
-iNSERT INTO Zoo..Bilety 
-	(#id_biletu,#id_pawilonow,termin,cena,#id_obnizki) 
-	VALUES (1,'1','2020-09-09',20, 1)
 
