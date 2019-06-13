@@ -289,12 +289,3 @@ CREATE TABLE Zoo..Opinie(
 	FOREIGN KEY (#id_biletu) references Zoo..Bilety(#id_biletu),
 	FOREIGN KEY (pawilon_id) references Zoo..pawilony(pawilon_id)
 	);
-GO
-CREATE TABLE Zoo..Zaplata(
-	#id_transakcji int NOT NULL,
-	id_biletow int NOT NULL,
-	kwota int NOT NULL,
-	sposob_platnosci varchar NOT NULL,
-	PRIMARY KEY (#id_transakcji),
-	FOREIGN KEY (id_biletow) references Zoo..Bilety(#id_biletu)
-	);
